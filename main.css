@@ -24,3 +24,7 @@ button {
 #name {
   margin: 3%
 }
+
+#log {
+  position: absolute; right: 5%; bottom: 5%;
+}
