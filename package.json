@@ -1,0 +1,12 @@
+{
+  "name": "hours",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^1.4.1",
+    "smalltalk": "*",
+    "moment":"*"
+  }
+}

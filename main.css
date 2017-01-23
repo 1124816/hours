@@ -1,0 +1,26 @@
+body {
+  text-align: center;
+}
+
+.box {
+  border: 1px solid gray;
+  border-top: 0;
+  margin: 0 auto;
+  width: 20%;
+}
+
+p {
+  margin: 0;
+}
+
+input {
+  width: 20%;
+}
+
+button {
+  margin: 3%
+}
+
+#name {
+  margin: 3%
+}

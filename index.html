@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+  </head>
+  <body>
+    <h1>Sign In</h1>
+    <input type="text" id="id" onKeyUp="IDChange();"></input>
+    <div class="box">
+      <p onclick="pClick(0)" id="0"></p>
+      <p onclick="pClick(1)" id="1"></p>
+      <p onclick="pClick(2)" id="2"></p>
+      <p onclick="pClick(3)" id="3"></p>
+      <p onclick="pClick(4)" id="4"></p>
+      <p onclick="pClick(5)" id="5"></p>
+    </div>
+    <p id="name"></p>
+    <button id="sign" onclick="sign()">Sign Up</button>
+  </body>
+
+  <script>
+  var fs =require("fs");
+  var smalltalk = require("smalltalk");
+  var moment = require("moment");
+
+  var valid = false;
+  var textbox = document.getElementById('id');
+  var signB = document.getElementById('sign');
+  var nameP = document.getElementById('name');
+
+  try {
+    var content = fs.readFileSync("hours.txt");
+  } catch(err) {
+    fs.writeFileSync('hours.txt', '{}');
+    var content = fs.readFileSync("hours.txt");
+  }
+
+  content = JSON.parse(content);
+
+  function IDChange() {
+    if(content.hasOwnProperty(textbox.value)){
+      console.log(textbox.value);
+      if(content[textbox.value][0]) {
+        signB.innerHTML = "Sign Out";
+      }else {
+        signB.innerHTML = "Sign In";
+      }
+      nameP.innerHTML = textbox.value;
+      valid = true;
+    } else {
+      console.log("fail");
+      signB.innerHTML = "Sign Up";
+      nameP.innerHTML = "";
+      valid = false;
+    };
+    var long = [];
+    for(var key in content) {
+      if(key.toLowerCase().search(textbox.value.toLowerCase()) != -1 && long.length < 6&& textbox.value.toLowerCase() !=key.toLowerCase()) {
+        long.push(key);
+      };
+    };
+    for (var i = 0; i < 6; i++) {
+      var name = document.getElementById(i);
+      if(i < long.length) {
+        name.innerHTML = long[i];
+      } else {
+        name.innerHTML = '';
+      };
+    };
+  };
+
+  function sign() {
+    if(valid) {
+      if(content[textbox.value][0]) {
+        signB.innerHTML = "Sign In";
+        content[textbox.value][0] = false;
+        content[textbox.value][2][content[textbox.value][2].length-1].push(moment());
+        content[textbox.value][1] += moment.duration(content[textbox.value][2][content[textbox.value][2].length-1][1].diff(content[textbox.value][2][content[textbox.value][2].length-1][0])).asMinutes();
+        fs.writeFileSync('hours.txt', JSON.stringify(content));
+        console.log(content[textbox.value][1]);
+      }else {
+        signB.innerHTML = "Sign Out";
+        content[textbox.value][0] = true;
+        content[textbox.value][2].push([moment()]);
+        fs.writeFileSync('hours.txt', JSON.stringify(content));
+      }
+    } else {
+      content[textbox.value] = [true, 0, [[moment()]]];
+      fs.writeFileSync('hours.txt', JSON.stringify(content));
+      valid = true
+      signB.innerHTML = "Sign Out";
+      nameP.innerHTML = textbox.value;
+    };
+  };
+
+  function pClick(n) {
+    var name = document.getElementById(n);
+    textbox.value = name.innerHTML
+    if(content[textbox.value][0]) {
+      signB.innerHTML = "Sign Out";
+    }else {
+      signB.innerHTML = "Sign In";
+    }
+    nameP.innerHTML = textbox.value;
+    valid = true;
+
+    var long = [];
+    for(var key in content) {
+      if(key.toLowerCase().search(textbox.value.toLowerCase()) != -1 && long.length < 6 && textbox.value.toLowerCase() !=key.toLowerCase()) {
+        long.push(key);
+      };
+    };
+    for (var i = 0; i < 6; i++) {
+      var name = document.getElementById(i);
+      if(i < long.length) {
+        name.innerHTML = long[i];
+      } else {
+        name.innerHTML = '';
+      };
+    };
+  };
+
+  </script>
+</html>
