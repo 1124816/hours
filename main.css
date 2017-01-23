@@ -28,3 +28,8 @@ button {
 #log {
   position: absolute; right: 5%; bottom: 5%;
 }
+
+#listd {
+  float: left;
+  position: absolute; left: 5%; top: 5%;
+}
